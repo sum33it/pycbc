@@ -25,7 +25,7 @@
 statistic values
 """
 
-import numpy
+import numpy,glinca
 from . import events
 
 
@@ -509,6 +509,16 @@ class MaxContTradNewSNRStatistic(NewSNRStatistic):
         return numpy.array(numpy.minimum(chisq_newsnr, autochisq_newsnr,
                            dtype=numpy.float32), ndmin=1, copy=False)
 
+class ReweightedNewSNRStatistic(NewSNRStatistic):
+    """
+    Reweighted new SNR with metric distance
+    """
+
+    def RS1(self,s1,s2,dl):
+        return numpy.sqrt(s1**2+s2**2)*numpy.exp(-dl**2)
+
+    def RS2(self,s1,s2,fdp):
+        return numpy.sqrt(s1**2+s2**2)*fdp
 
 statistic_dict = {
     'newsnr': NewSNRStatistic,
@@ -520,7 +530,8 @@ statistic_dict = {
     'phasetd_exp_fit_stat': PhaseTDExpFitStatistic,
     'max_cont_trad_newsnr': MaxContTradNewSNRStatistic,
     'phasetd_exp_fit_stat_sgveto': PhaseTDExpFitSGStatistic,
-    'newsnr_sgveto': NewSNRSGStatistic
+    'newsnr_sgveto': NewSNRSGStatistic,
+    'reweighted_newsnr':ReweightedNewSNRStatistic
 }
 
 def get_statistic(stat):

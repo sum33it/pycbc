@@ -406,6 +406,7 @@ setup (
                'bin/hdfcoinc/pycbc_average_psd',
                'bin/hdfcoinc/pycbc_coinc_mergetrigs',
                'bin/hdfcoinc/pycbc_coinc_findtrigs',
+               'bin/hdfcoinc/pycbc_coinc_findtrigs_modified',
                'bin/hdfcoinc/pycbc_coinc_statmap',
                'bin/hdfcoinc/pycbc_coinc_statmap_inj',
                'bin/hdfcoinc/pycbc_page_foreground',
