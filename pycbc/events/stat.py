@@ -509,15 +509,20 @@ class MaxContTradNewSNRStatistic(NewSNRStatistic):
         return numpy.array(numpy.minimum(chisq_newsnr, autochisq_newsnr,
                            dtype=numpy.float32), ndmin=1, copy=False)
 
-class ReweightedNewSNRStatistic(NewSNRStatistic):
+class ReweightedNewSNRStatistic_RS1(NewSNRStatistic):
     """
     Reweighted new SNR with metric distance
     """
 
-    def RS1(self,s1,s2,dl):
+    def coinc(self,s1,s2,dl):
         return numpy.sqrt(s1**2+s2**2)*numpy.exp(-dl**2)
 
-    def RS2(self,s1,s2,fdp):
+class ReweightedNewSNRStatistic_RS2(NewSNRStatistic):
+    """
+    Reweighted new SNR with metric distance
+    """
+
+    def coinc(self,s1,s2,fdp):
         return numpy.sqrt(s1**2+s2**2)*fdp
 
 statistic_dict = {
@@ -531,7 +536,8 @@ statistic_dict = {
     'max_cont_trad_newsnr': MaxContTradNewSNRStatistic,
     'phasetd_exp_fit_stat_sgveto': PhaseTDExpFitSGStatistic,
     'newsnr_sgveto': NewSNRSGStatistic,
-    'reweighted_newsnr':ReweightedNewSNRStatistic
+    'reweighted_newsnr_RS1':ReweightedNewSNRStatistic_RS1,
+    'reweighted_newsnr_RS2':ReweightedNewSNRStatistic_RS2
 }
 
 def get_statistic(stat):

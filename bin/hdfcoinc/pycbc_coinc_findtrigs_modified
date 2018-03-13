@@ -294,7 +294,7 @@ for tnum in range(tmin, tmax):
                    zip(th1,th2,covmat1,covmat2)]).T
     del th1, th2, scaling1, scaling2, covmat1, covmat2
     logging.info('Calculating Multi-Detector Combined Statistic')
-    c=rank_method.RS2(s0[i0], s1[i1],fdp)
+    c=rank_method.coinc(s0[i0], s1[i1],fdp)
     #index values of the zerolag triggers
     fi = numpy.where(slide == 0)[0]
 
