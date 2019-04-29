@@ -68,7 +68,7 @@ else:
 logging.info("Plotting samples")
 fig, axs = plt.subplots(ndim, figsize=(10,8), sharex=True)
 plt.xlabel("Iteration")
-
+"""
 # loop over parameters
 axs = [axs] if not hasattr(axs, "__iter__") else axs
 
@@ -123,7 +123,7 @@ for i, arg in enumerate(parameters):
     # Set y labels
     axs[i].set_ylabel(labels[arg])
 fp.close()
-
+"""
 # save figure with meta-data
 caption_kwargs = {
     "parameters" : ", ".join(labels),

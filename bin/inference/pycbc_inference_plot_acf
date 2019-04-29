@@ -76,7 +76,7 @@ except AttributeError:
 logging.info('Loading parameters')
 fp, parameters, labels, _ = io.results_from_cli(opts, load_samples=False)
 
-
+"""
 # calculate autocorrelation function
 logging.info("Calculating autocorrelation functions")
 acfs = samplers[fp.sampler].compute_acf(fp.filename,
@@ -141,7 +141,7 @@ if not opts.no_legend:
     ax.legend()
 
 plt.tight_layout()
-
+"""
 # save figure with meta-data
 caption_kwargs = {
     "parameters" : ", ".join(labels),
