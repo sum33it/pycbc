@@ -1811,8 +1811,9 @@ class PycbcInferenceExecutable(Executable):
         super(PycbcInferenceExecutable, self).__init__(cp, exe_name, universe,
                                                        ifo, out_dir, tags)
 
-    def create_node(self, channel_names, config_file, injection_file=None,
-                    seed=None, fake_strain_seed=None, tags=None):
+    def create_node(self, channel_names, config_file, injection_file=None, 
+                    ringdown_injection_file=None, seed=None,
+                    fake_strain_seed=None, tags=None):
         """ Set up a CondorDagmanNode class to run ``pycbc_inference``.
 
         Parameters
@@ -1863,7 +1864,9 @@ class PycbcInferenceExecutable(Executable):
         node.add_input_opt("--config-file", config_file)
         if fake_strain_seed is not None:
             node.add_opt("--fake-strain-seed", fake_strain_seed_opt)
-        if injection_file:
+        if ringdown_injection_file:
+            node.add_input_opt('--ringdown-injection-file', injection_file)
+        elif injection_file:
             node.add_input_opt("--injection-file", injection_file)
         if seed:
             node.add_opt("--seed", seed)

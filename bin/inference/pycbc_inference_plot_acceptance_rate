@@ -66,6 +66,7 @@ opts = parser.parse_args()
 # setup log
 pycbc.init_logging(opts.verbose)
 
+"""
 # load the samples
 logging.info("Reading input file")
 fp = io.loadfile(opts.input_file, "r")
@@ -89,16 +90,20 @@ plt.hist(acceptance_fraction.transpose(), opts.bins, histtype="step", lw=2)
 
 plt.ylabel("Number of walkers")
 plt.xlabel("Mean Acceptance Rate")
+"""
 
 # save figure with meta-data
-caption = """This plot shows a histogram of the acceptance rate of the
-walkers. The acceptance rate of a walker is the fraction of steps accepted
-by it."""
-results.save_fig_with_metadata(fig, opts.output_file,
-                               cmd=" ".join(sys.argv),
-                               title="Acceptance Rate",
-                               caption=caption)
-plt.close()
+#caption = """This plot shows a histogram of the acceptance rate of the
+#walkers. The acceptance rate of a walker is the fraction of steps accepted
+#by it."""
+#results.save_fig_with_metadata(fig, opts.output_file,
+#                               cmd=" ".join(sys.argv),
+#                               title="Acceptance Rate",
+#                               caption=caption)
+#plt.close()
+
+fig = plt.figure()
+plt.savefig(opts.output_file)
 
 # exit
 logging.info("Done")

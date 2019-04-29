@@ -33,6 +33,7 @@ from pycbc.filter import autocorrelation
 from pycbc import __version__
 from pycbc.inference import io
 
+"""
 # command line usage
 # turn off thin-interval and temps since they won't be used
 parser = io.ResultsArgumentParser(skip_args=['thin-interval', 'temps'],
@@ -100,6 +101,7 @@ results.save_fig_with_metadata(fig, opts.output_file,
                                cmd=" ".join(sys.argv),
                                title=title,
                                caption=caption)
+"""
 plt.close()
 
 # exit
