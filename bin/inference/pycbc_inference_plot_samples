@@ -37,11 +37,11 @@ parser.add_argument("--verbose", action="store_true", default=False,
                     help="Print logging info.")
 parser.add_argument("--version", action="version", version=__version__,
                     help="show version number and exit")
-parser.add_argument("--walkers", nargs='+', default=None,
-                    help="Walker indices to plot. Options are 'all' or one "
-                         "or more walker indices. Default is to plot the "
-                         "average of all walkers for the input "
-                         "`--parameters`.")
+#parser.add_argument("--walkers", nargs='+', default=None,
+#                    help="Walker indices to plot. Options are 'all' or one "
+#                         "or more walker indices. Default is to plot the "
+#                         "average of all walkers for the input "
+#                         "`--parameters`.")
 parser.add_argument("--output-file", type=str, required=True,
                     help="Path to output plot.")
 
@@ -58,10 +58,10 @@ fp, parameters, labels, _ = io.results_from_cli(opts, load_samples=False)
 ndim = len(parameters)
 
 # get walker indices
-if opts.walkers == ['all'] or opts.walkers == None:
-    walkers = range(fp.nwalkers)
-else:
-    walkers = list(map(int, opts.walkers))
+#if opts.walkers == ['all'] or opts.walkers == None:
+#    walkers = range(fp.nwalkers)
+#else:
+#    walkers = list(map(int, opts.walkers))
 
 # plot samples
 # plot each parameter as a different subplot
