@@ -226,7 +226,7 @@ def newsnr_sgveto_psdvar(snr, bchisq, sgchisq, psd_var_val):
     nsnr = newsnr_sgveto(snr, bchisq, sgchisq)
     nsnr = numpy.array(nsnr, ndmin=1)
     psd_var_val = numpy.array(psd_var_val, ndmin=1)
-    t = numpy.array(psd_var_val >= 1.8, ndmin=1)
+    t = numpy.array(psd_var_val >= 1.15, ndmin=1)
     if len(t) > 0:
         nsnr[t] = nsnr[t] / numpy.sqrt(psd_var_val[t])
 
