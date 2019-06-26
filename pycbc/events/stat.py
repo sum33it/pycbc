@@ -26,6 +26,7 @@ statistic values
 """
 
 import numpy
+import scipy
 from . import events
 
 
@@ -114,6 +115,63 @@ def get_newsnr_sgveto_psdvar_scaled(trigs):
                                     trigs['sg_chisq'][:])
     return numpy.array(nsnr_sg_psd, ndmin=1, dtype=numpy.float32)
 
+def get_newsnr_sgveto_psdvar_weighted(trigs):
+    """
+    Calculate newsnr re-weighted by the sine-gaussian veto and psd variation
+    statistic where psd variation is accounted by scaling psd with 'psd variation value'
+
+    Parameters
+    ----------
+    trigs: dict of numpy.ndarrays
+        Dictionary holding single detector trigger information.
+    'chisq_dof', 'snr', 'chisq' and 'psd_var_val' are required keys
+
+    Returns
+    -------
+     numpy.ndarray
+        Array of newsnr values
+    """
+    dof = 2. * trigs['chisq_dof'][:] - 2.
+    psd_var_vals = trigs['psd_var_val'][:]
+    wi1 = (scipy.stats.norm.cdf(abs(psd_var_vals-1.01),0,0.05)-scipy.stats.norm.cdf(-abs(psd_var_vals-1.01),0,0.05))
+    rn=numpy.random.rand(len(wi1))
+    invals =  wi1<rn
+    wi = numpy.ones(len(wi1))
+    wi[numpy.where(invals)[0]] = psd_var_vals[numpy.where(invals)[0]]
+    nsnr_sg_psd = \
+        events.newsnr_sgveto(trigs['snr'][:]/(wi*numpy.sqrt(wi)), trigs['chisq'][:] / dof,
+                                    trigs['sg_chisq'][:])
+    return numpy.array(nsnr_sg_psd, ndmin=1, dtype=numpy.float32)
+
+
+def get_newsnr_sgveto_psdvar_weighted1(trigs):
+    """
+    Calculate newsnr re-weighted by the sine-gaussian veto and psd variation
+    statistic where psd variation is accounted by scaling psd with 'psd variation value'
+
+    Parameters
+    ----------
+    trigs: dict of numpy.ndarrays
+        Dictionary holding single detector trigger information.
+    'chisq_dof', 'snr', 'chisq' and 'psd_var_val' are required keys
+
+    Returns
+    -------
+     numpy.ndarray
+        Array of newsnr values
+    """
+    dof = 2. * trigs['chisq_dof'][:] - 2.
+    psd_var_vals = trigs['psd_var_val'][:]
+    mean,std = scipy.stats.norm.fit(psd_var_vals[psd_var_vals<1.2])
+    wi1 = (scipy.stats.norm.cdf(psd_var_vals,mean,std)/scipy.stats.norm.cdf(mean,mean,std))
+    rn=numpy.random.rand(len(wi1))
+    invals =  wi1<rn
+    wi = numpy.ones(len(wi1))
+    wi[numpy.where(invals)[0]] = psd_var_vals[numpy.where(invals)[0]]
+    nsnr_sg_psd = \
+        events.newsnr_sgveto(trigs['snr'][:]/(wi*numpy.sqrt(wi)), trigs['chisq'][:] / dof,
+                                    trigs['sg_chisq'][:])
+    return numpy.array(nsnr_sg_psd, ndmin=1, dtype=numpy.float32)
 
 class Stat(object):
 
@@ -256,6 +314,43 @@ class NewSNRSGPSDScaledStatistic(NewSNRSGStatistic):
         return get_newsnr_sgveto_psdvar_scaled(trigs)
 
 
+class NewSNRSGPSDWeightedStatistic(NewSNRSGStatistic):
+
+    """ Calculate the NewSNRSGPSDWeighted coincident detection statistic """
+
+    def single(self, trigs):
+        """Calculate the single detector statistic, here equal to newsnr
+           combined with sgveto and psdvar (scaled) statistic
+
+        Parameters
+        ----------
+        trigs: dict of numpy.ndarrays
+
+        Returns
+        -------
+        numpy.ndarray
+            The array of single detector values
+        """
+        return get_newsnr_sgveto_psdvar_weighted(trigs)
+
+class NewSNRSGPSDWeightedStatistic1(NewSNRSGStatistic):
+
+    """ Calculate the NewSNRSGPSDWeighted coincident detection statistic """
+
+    def single(self, trigs):
+        """Calculate the single detector statistic, here equal to newsnr
+           combined with sgveto and psdvar (scaled) statistic
+
+        Parameters
+        ----------
+        trigs: dict of numpy.ndarrays
+
+        Returns
+        -------
+        numpy.ndarray
+            The array of single detector values
+        """
+        return get_newsnr_sgveto_psdvar_weighted1(trigs)
 
 class NetworkSNRStatistic(NewSNRStatistic):
 
@@ -722,6 +817,8 @@ sngl_statistic_dict = {
     'newsnr_sgveto': NewSNRSGStatistic,
     'newsnr_sgveto_psdvar': NewSNRSGPSDStatistic,
     'newsnr_sgveto_psdvar_scaled': NewSNRSGPSDScaledStatistic,
+    'newsnr_sgveto_psdvar_weighted': NewSNRSGPSDWeightedStatistic,
+    'newsnr_sgveto_psdvar_weighted1': NewSNRSGPSDWeightedStatistic1,
     'exp_fit_sg_csnr_psdvar': ExpFitSGPSDCombinedSNR,
     'exp_fit_sg_csnr_psdvar_scaled': ExpFitSGPSDScaledCombinedSNR
 }
