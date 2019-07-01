@@ -655,13 +655,13 @@ class SingleDetTriggers(object):
     @property
     def newsnr_sgveto_psdvar(self):
         return ranking.newsnr_sgveto_psdvar(self.snr, self.rchisq,
-                                           self.sgchisq, self.psd_var_val)
+                                            self.sgchisq, self.psd_var_val)
 
     @property
-     def newsnr_sgveto_psdvar_scaled(self):
+    def newsnr_sgveto_psdvar_scaled(self):
         return events.newsnr_sgveto_psdvar_scaled(self.snr,
-                                                   self.rchisq, self.sgchisq,
-                                                   self.psd_var_val)
+                                                  self.rchisq, self.sgchisq,
+                                                  self.psd_var_val)
 
     def get_column(self, cname):
         # Fiducial value that seems to work, not extensively tuned.
