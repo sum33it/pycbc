@@ -93,7 +93,7 @@ def get_newsnr_sgveto_psdvar(trigs):
                                     trigs['psd_var_val'][:])
     return numpy.array(nsnr_sg_psd, ndmin=1, dtype=numpy.float32)
 
-def get_newsnr_sgveto_psdvar_scaled(trigs):
+def get_newsnr_sgveto_psdvar_scaled(trigs,scale_factor):
     """
     Calculate newsnr re-weighted by the sine-gaussian veto and psd variation
     statistic where psd variation is accounted by scaling psd with 'psd variation value'
@@ -111,7 +111,7 @@ def get_newsnr_sgveto_psdvar_scaled(trigs):
     """
     dof = 2. * trigs['chisq_dof'][:] - 2.
     nsnr_sg_psd = \
-        events.newsnr_sgveto(trigs['snr'][:]/numpy.sqrt(trigs['psd_var_val'][:]), trigs['chisq'][:] / dof,
+        events.newsnr_sgveto(trigs['snr'][:]/(trigs['psd_var_val'][:])**scale_factor, trigs['chisq'][:] / dof,
                                     trigs['sg_chisq'][:])
     return numpy.array(nsnr_sg_psd, ndmin=1, dtype=numpy.float32)
 
@@ -298,7 +298,7 @@ class NewSNRSGPSDScaledStatistic(NewSNRSGStatistic):
 
     """ Calculate the NewSNRSGPSD coincident detection statistic """
 
-    def single(self, trigs):
+    def single(self, trigs, scale_factor=0.5):
         """Calculate the single detector statistic, here equal to newsnr
            combined with sgveto and psdvar (scaled) statistic
 
@@ -311,7 +311,7 @@ class NewSNRSGPSDScaledStatistic(NewSNRSGStatistic):
         numpy.ndarray
             The array of single detector values
         """
-        return get_newsnr_sgveto_psdvar_scaled(trigs)
+        return get_newsnr_sgveto_psdvar_scaled(trigs,scale_factor)
 
 
 class NewSNRSGPSDWeightedStatistic(NewSNRSGStatistic):
