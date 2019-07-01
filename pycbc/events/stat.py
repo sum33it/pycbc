@@ -92,6 +92,30 @@ def get_newsnr_sgveto_psdvar(trigs):
                                     trigs['psd_var_val'][:])
     return numpy.array(nsnr_sg_psd, ndmin=1, dtype=numpy.float32)
 
+def get_newsnr_sgveto_psdvar_scaled(trigs):
+    """
+    Calculate newsnr re-weighted by the sine-gaussian veto and psd variation
+    statistic
+
+    Parameters
+    ----------
+    trigs: dict of numpy.ndarrays
+        Dictionary holding single detector trigger information.
+    'chisq_dof', 'snr', 'chisq' and 'psd_var_val' are required keys
+
+    Returns
+    -------
+     numpy.ndarray
+        Array of newsnr values
+    """
+    dof = 2. * trigs['chisq_dof'][:] - 2.
+    psd_var_val = trigs['psd_var_val'][:]
+    nsnr_sg_psd = \
+        events.newsnr_sgveto(trigs['snr'][:]/(psd_var_val**0.27),
+                             trigs['chisq'][:] / dof,
+                             trigs['sg_chisq'][:])
+    return numpy.array(nsnr_sg_psd, ndmin=1, dtype=numpy.float32)
+
 class Stat(object):
 
     """ Base class which should be extended to provide a coincident statistic"""
@@ -211,6 +235,27 @@ class NewSNRSGPSDStatistic(NewSNRSGStatistic):
             The array of single detector values
         """
         return get_newsnr_sgveto_psdvar(trigs)
+
+
+class NewSNRSGPSDScaledStatistic(NewSNRSGStatistic):
+
+    """ Calculate the NewSNRSGPSD coincident detection statistic """
+
+    def single(self, trigs):
+        """Calculate the single detector statistic, here equal to newsnr
+           combined with sgveto and psdvar statistic
+
+        Parameters
+        ----------
+        trigs: dict of numpy.ndarrays
+
+        Returns
+        -------
+        numpy.ndarray
+            The array of single detector values
+        """
+        return get_newsnr_sgveto_psdvar_scaled(trigs)
+
 
 class NetworkSNRStatistic(NewSNRStatistic):
 
@@ -638,6 +683,7 @@ statistic_dict = {
     'phasetd_exp_fit_stat_sgveto': PhaseTDExpFitSGStatistic,
     'newsnr_sgveto': NewSNRSGStatistic,
     'newsnr_sgveto_psdvar': NewSNRSGPSDStatistic,
+    'newsnr_sgveto_psdvar_scaled': NewSNRSGPSDScaledStatistic,
     'phasetd_exp_fit_stat_sgveto_psdvar': PhaseTDExpFitSGPSDStatistic
 }
 
@@ -651,6 +697,7 @@ sngl_statistic_dict = {
     'max_cont_trad_newsnr': MaxContTradNewSNRStatistic,
     'newsnr_sgveto': NewSNRSGStatistic,
     'newsnr_sgveto_psdvar': NewSNRSGPSDStatistic,
+    'newsnr_sgveto_psdvar_scaled': NewSNRSGPSDScaledStatistic,
     'exp_fit_sg_csnr_psdvar': ExpFitSGPSDCombinedSNR
 }
 
