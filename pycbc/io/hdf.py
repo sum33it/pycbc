@@ -610,10 +610,10 @@ class SingleDetTriggers(object):
         return events.newsnr_sgveto_psdvar(self.snr, self.rchisq, self.sgchisq, self.psd_var_val)
 
     @property
-     def newsnr_sgveto_psdvar_scaled(self):
-         return events.newsnr_sgveto_psdvar_scaled(self.snr,
-                                                   self.rchisq, self.sgchisq,
-                                                   self.psd_var_val)
+    def newsnr_sgveto_psdvar_scaled(self):
+        return events.newsnr_sgveto_psdvar_scaled(self.snr,
+                                                  self.rchisq, self.sgchisq,
+                                                  self.psd_var_val)
 
     def get_column(self, cname):
         if hasattr(self, cname):
