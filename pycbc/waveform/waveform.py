@@ -198,6 +198,7 @@ def _spintaylor_aligned_prec_swapper(**p):
 def _lalsim_fd_waveform(**p):
     print "Here are the waveform params:", p
     lal_pars = _check_lal_pars(p)
+    print float(p['spin1x']), float(p['spin1y']), float(p['spin1z'])
     hp1, hc1 = lalsimulation.SimInspiralChooseFDWaveform(
                float(pnutils.solar_mass_to_kg(p['mass1'])),
                float(pnutils.solar_mass_to_kg(p['mass2'])),
