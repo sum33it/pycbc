@@ -29,30 +29,6 @@ from . import ranking
 from . import coinc_rate
 
 
-def get_newsnr_sgveto_psdvar_scaled(trigs):
-    """
-    Calculate newsnr re-weighted by the sine-gaussian veto and psd variation
-    statistic
-
-    Parameters
-    ----------
-    trigs: dict of numpy.ndarrays
-        Dictionary holding single detector trigger information.
-    'chisq_dof', 'snr', 'chisq' and 'psd_var_val' are required keys
-
-    Returns
-    -------
-     numpy.ndarray
-        Array of newsnr values
-    """
-    dof = 2. * trigs['chisq_dof'][:] - 2.
-    psd_var_val = trigs['psd_var_val'][:]
-    nsnr_sg_psd = \
-        events.newsnr_sgveto(trigs['snr'][:]/(psd_var_val**0.27),
-                             trigs['chisq'][:] / dof,
-                             trigs['sg_chisq'][:])
-    return numpy.array(nsnr_sg_psd, ndmin=1, dtype=numpy.float32)
-
 class Stat(object):
 
     """ Base class which should be extended to provide a coincident statistic"""
@@ -193,7 +169,7 @@ class NewSNRSGPSDScaledStatistic(NewSNRSGStatistic):
         numpy.ndarray
             The array of single detector values
         """
-        return get_newsnr_sgveto_psdvar_scaled(trigs)
+        return ranking.get_newsnr_sgveto_psdvar_scaled(trigs)
 
 
 class NetworkSNRStatistic(NewSNRStatistic):
