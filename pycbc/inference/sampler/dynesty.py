@@ -129,7 +129,20 @@ class DynestySampler(BaseSampler):
         return obj
 
     def checkpoint(self):
-        pass
+        """Dumps current samples to the checkpoint file."""
+        # thin and write new samples
+        for fn in [self.checkpoint_file, self.backup_file]:
+            with self.io(fn, "a") as fp:
+                fp.write_logevidence(logz, dlogz)
+        pass       
+
+    def current_state(self):
+        """Get the current state of the sampler"""
+    #    for item in self._sampler.__dict__.keys():
+    #        if item.startswith('saved_'):
+        current_state_dict = {p: getattrs(self._sampler,p) for p in 
+                              self._sampler.__dict__.keys()}
+        return current_state_dict
 
     def finalize(self):
         logz = self._sampler.results.logz[-1:][0]
@@ -184,6 +197,8 @@ class DynestySampler(BaseSampler):
             # write log evidence
             fp.write_logevidence(self._sampler.results.logz[-1:][0],
                                  self._sampler.results.logzerr[-1:][0])
+            # write metadate
+            #fp.write_sampler_metadata(self)
 
     @property
     def posterior_samples(self):
