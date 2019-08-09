@@ -498,6 +498,8 @@ class SingleDetTriggers(object):
             self.stat_name = "Reweighted SNR (+sgveto)"
         elif ranking_statistic == "newsnr_sgveto_psdvar":
             self.stat_name = "Reweighted SNR (+sgveto+psdvar)"
+        elif ranking_statistic == "newsnr_sgveto_psdvar_scaled":
+             self.stat_name = "Reweighted SNR (+sgveto+psdvar+scaled)"
         elif ranking_statistic == "snr":
             self.stat_name = "SNR"
         else:
@@ -654,6 +656,12 @@ class SingleDetTriggers(object):
     def newsnr_sgveto_psdvar(self):
         return ranking.newsnr_sgveto_psdvar(self.snr, self.rchisq,
                                            self.sgchisq, self.psd_var_val)
+
+    @property
+     def newsnr_sgveto_psdvar_scaled(self):
+        return events.newsnr_sgveto_psdvar_scaled(self.snr,
+                                                   self.rchisq, self.sgchisq,
+                                                   self.psd_var_val)
 
     def get_column(self, cname):
         # Fiducial value that seems to work, not extensively tuned.
