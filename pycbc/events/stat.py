@@ -726,7 +726,6 @@ statistic_dict = {
     'newsnr_sgveto_psdvar': NewSNRSGPSDStatistic,
     'exp_fit_sg_bg_rate': ExpFitSGBgRateStatistic,
     'exp_fit_sg_fgbg_rate': ExpFitSGFgBgRateStatistic,
-    'exp_fit_sg_coinc_rate': ExpFitSGCoincRateStatistic,
     'newsnr_sgveto_psdvar_scaled': NewSNRSGPSDScaledStatistic,
     'phasetd_exp_fit_stat_sgveto_psdvar': PhaseTDExpFitSGPSDStatistic,
     'phasetd_exp_fit_stat_sgveto_psdvar_scaled': PhaseTDExpFitSGPSDScaledStatistic
