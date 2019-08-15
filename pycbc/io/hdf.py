@@ -659,7 +659,7 @@ class SingleDetTriggers(object):
 
     @property
     def newsnr_sgveto_psdvar_scaled(self):
-        return events.newsnr_sgveto_psdvar_scaled(self.snr,
+        return ranking.newsnr_sgveto_psdvar_scaled(self.snr,
                                                   self.rchisq, self.sgchisq,
                                                   self.psd_var_val)
 
