@@ -534,6 +534,9 @@ dbeta2 = Parameter("dbeta2",
 dbeta3 = Parameter("dbeta3",
                 dtype=float, default=0., label=r"$d\beta_3$",
                 description="Intermediate testingGR parameter.")
+dchimin4 = Parameter("dchimin4",
+                dtype=float, default=0., label=r"$d\chi_{-4}$",
+                description="-2PN testingGR parameter.")
 #
 # =============================================================================
 #

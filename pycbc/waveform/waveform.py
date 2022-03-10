@@ -170,6 +170,8 @@ def _check_lal_pars(p):
         lalsimulation.SimInspiralWaveformParamsInsertNonGRDBeta2(lal_pars,p['dbeta2'])
     if p['dbeta3'] is not None:
         lalsimulation.SimInspiralWaveformParamsInsertNonGRDBeta3(lal_pars,p['dbeta3'])
+    if p['dchimin4'] is not None:
+        lalsimulation.SimInspiralWaveformParamsInsertNonGRDChiMin4(lal_pars,p['dchimin4'])
     return lal_pars
 
 def _lalsim_td_waveform(**p):
