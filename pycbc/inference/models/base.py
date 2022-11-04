@@ -32,6 +32,8 @@ from configparser import NoSectionError
 from pycbc import (transforms, distributions)
 from pycbc.io import FieldArray
 
+def f(x):
+    return x
 
 #
 # =============================================================================
