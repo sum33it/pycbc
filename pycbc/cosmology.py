@@ -39,7 +39,7 @@ from astropy.cosmology import parameters
 import pycbc.conversions
 
 
-DEFAULT_COSMOLOGY = 'Planck15'
+DEFAULT_COSMOLOGY = 'Planck18'
 
 
 def get_cosmology(cosmology=None, **kwargs):
