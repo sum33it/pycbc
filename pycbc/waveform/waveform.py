@@ -812,15 +812,16 @@ def _base_get_td_waveform_from_fd(template=None, rwrap=None, dict_modification=N
         # Check if Amplitude-Phase modification is needed
         if dict_modification is not None:
             # Modify the WF
-            amplitude_factor = dict_modification['amplitude_factor']
-            phase_factor = dict_modification['phase_factor']
-            Am_plus = amplitude_from_frequencyseries(hp)*(amplitude_factor)
-            Am_cross = amplitude_from_frequencyseries(hc)*(amplitude_factor)
-            Ph_plus = phase_from_frequencyseries(hp)*(phase_factor)
-            Ph_cross = phase_from_frequencyseries(hc)*(phase_factor)
+            delta_amplitude = dict_modification['delta_amplitude']
+            delta_phase = dict_modification['delta_phase']
+            Am_plus = wfutils.amplitude_from_frequencyseries(hp)*(1+delta_amplitude)
+            Am_cross = wfutils.amplitude_from_frequencyseries(hc)*(1+delta_amplitude)
+            #Ph_plus = (wfutils.phase_from_frequencyseries(hp)-numpy.pi)*(phase_factor) # pi is just a hack at the moment, need to understand
+            Ph_plus = wfutils.phase_from_frequencyseries(hp, remove_start_phase=False)*(1+delta_phase)
+            Ph_cross = wfutils.phase_from_frequencyseries(hc, remove_start_phase=False)*(1+delta_phase)
         
-            hp.data = np.vectorize(complex)(Am_plus*np.cos(Ph_plus), Am_plus*np.sin(Ph_plus))
-            hc.data = np.vectorize(complex)(Am_cross*np.cos(Ph_cross), Am_cross*np.sin(Ph_cross))
+            hp.data = numpy.vectorize(complex)(Am_plus*numpy.cos(Ph_plus), Am_plus*numpy.sin(Ph_plus))
+            hc.data = numpy.vectorize(complex)(Am_cross*numpy.cos(Ph_cross), Am_cross*numpy.sin(Ph_cross))
 
         # avoid wraparound
         hp = hp.cyclic_time_shift(-rwrap)
