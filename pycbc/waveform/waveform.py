@@ -526,6 +526,28 @@ def get_fd_waveform_sequence(template=None, **kwds):
     input_params = props(template, **kwds)
     input_params['delta_f'] = -1
     input_params['f_lower'] = -1
+    ###########################################################################
+    # This block of code is for waveform plugins. If you use external plugin, 
+    # and want to use "relative" model, add the parameter 
+    # "fd_sequence_from_plugin" in your config file.
+    # Also, make sure that your plugin have support for this function
+    ###########################################################################
+    # Plugin support starts
+    ########################
+    if input_params['fd_sequence_from_plugin']:
+        external_approximant = input_params['approximant']
+        external_approximant_fd_seq = f'{approximant}_fd_sequence'
+        if external_approximant_fd_seq is not in fd_approximants():
+            raise ValueError(
+                   f"{external_approximant_fd_seq} not found in",
+                    "waveform approximants. Make sure your plugin has this"
+                    "function."
+                  )
+        input_params['approximant']=external_approximant_fd_seq
+        return get_fd_waveform(**input_params)
+    ########################
+    # Plugin support ends
+    ########################
     if input_params['approximant'] not in fd_sequence:
         raise ValueError("Approximant %s not available" %
                             (input_params['approximant']))
